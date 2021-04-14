@@ -30,6 +30,16 @@ header {
   color: hsl(206, 17%, 28%);
 }
 
+.correct {
+  background-color: lightgreen;
+  border: 1px solid darkgreen;
+}
+
+.incorrect {
+  background-color: salmon;
+  border: 1px solid darkred;
+}
+
 .card {
   background-color: hsl(0, 0%, 100%);
   border-radius: 5px;
@@ -48,6 +58,7 @@ header {
 
 .card p {
   font-size: 16px;
+  margin: 0 auto;
 }
 
 .card-header::after {
@@ -80,8 +91,12 @@ header {
   text-align: center;
 }
 
+.card-footer h3 {
+  margin: 10px 0 0 0;
+}
+
 .card-footer button {
-  margin: 20px auto;
+  margin-top:20px;
   line-height: 1.7;
 }
 

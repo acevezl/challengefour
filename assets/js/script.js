@@ -152,8 +152,10 @@ function validateAnswer (event) {
         score+=10;
         correctAnswers++;
         console.log(correctAnswers);
+        event.target.setAttribute('class', 'correct');
         displayMessage("Correct!");
     } else {
+        event.target.setAttribute('class', 'incorrect');
         displayMessage("Wrong!");
     }
     var scoreEl = document.getElementById('your-score');
@@ -225,7 +227,7 @@ function endGame(reason){
 
     var tryAgainButton = document.createElement('button');
     tryAgainButton.innerHTML = "Try Again";
-    tryAgainButton.addEventListener('click',refreshPage());
+    tryAgainButton.addEventListener('click',refreshPage);
 
     footer.appendChild(tryAgainButton);
 
