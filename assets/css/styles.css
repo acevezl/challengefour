@@ -80,11 +80,22 @@ header {
   padding:10px;
 }
 
+.card-body hr {
+  width: 35%;
+}
+
 .card-body button {
-  flex: 1 30%;
   margin: 10px auto;
   min-width: 300px;
   line-height: 1.7;
+}
+
+.card-body input, .card-body label {
+  margin: 0 auto;
+}
+
+.card-body input {
+  width: 32px;
 }
 
 .card-footer {

@@ -89,7 +89,7 @@ function startGame() {
         var mins = Math.floor(timeLeft / 60);
         var secs = timeLeft % 60;
         timeContainer.textContent = mins + ":" + padLeftZeros(secs);
-        if (!timeLeft) {
+        if (timeLeft<=0) {
             clearInterval(updateTimeLeft); 
             endGame('Timeout');
         }
@@ -220,7 +220,17 @@ function endGame(reason){
     var answersSection = document.getElementById('answers');
     answersSection.innerHTML = "<p>Your Score: "+ score+"</p>" +
         "<p>Time bonus: " + bonus + "</p>" +
-        "<p>Total score: " + grandTotal + "</p>";
+        "<p>Total score: " + grandTotal + "</p><hr>"+
+        "<label>Enter your initials</label>";
+
+    var initialsBox = document.createElement("input");
+    initialsBox.setAttribute('maxlength','3');
+
+    var saveInitialsButton = document.createElement("button");
+    saveInitialsButton.innerText = "Save My Score";
+
+    answersSection.appendChild(initialsBox);
+    answersSection.appendChild(saveInitialsButton);
     
     // Clear the controls area and add a "Try Again" button
     var footer = document.getElementById('controls');
