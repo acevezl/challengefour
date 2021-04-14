@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Four : The Quiz Challenge</title>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+    <header>
+        <h1>The Quiz Challenge</h1>
+        <div class="timer">
+            <span>Remaining Time: </span>
+            <span id="remaining-time">0:00</span>
+            minutes
+        </div>
+        <div class="highscores">
+            <span>Your Score: </span>
+            <span id="your-score">0</span>
+        </div>
+        <div class="highscores">
+            <span>Highest Score: </span>
+            <span id="highest-score"></span>
+        </div>
+    </header>
+    <main class="card">
+        <section id="question" class="card-header">
+            <h2>Welcome to the Javascript Quiz</h2>
+        </section>
+        <section id="answers" class="card-body">
+            <p>Click Start Game and answer as many questions as you can in 1 minute.</p>
+        </section>
+        <section id="controls" class="card-footer">
+            <button id="start-game">Start Game</button>
+        </section>
+    </main>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
