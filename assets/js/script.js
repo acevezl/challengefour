@@ -155,6 +155,7 @@ function validateAnswer (event) {
         event.target.setAttribute('class', 'correct');
         displayMessage("Correct!");
     } else {
+        timeLeft-=10;
         event.target.setAttribute('class', 'incorrect');
         displayMessage("Wrong!");
     }
