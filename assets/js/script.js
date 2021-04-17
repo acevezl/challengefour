@@ -50,10 +50,18 @@ var questions = [
     {question: "Which is the correct “if” statement to execute certain code if “x” is equal to 2?", 
     answers: ["if (x^2)","if (x = 2)","if (x == 2)","if (x != 2)"],
     correctAnswer: 2,
+    asked: false},
+    {question: "What is the value of X after the following statement? var x = (3 > 2)? 30 : 31;", 
+    answers: ["3","2","30","31","True","False"],
+    correctAnswer: 2,
+    asked: false},
+    {question: "Which of the following functions will sort this array in descending order: var numbers = [2,6,3,4,1]?", 
+    answers: ["numbers.sort(function(a, b) { return a - b;});","numbers.sort(function(a, b) { return b - a;});","numbers.sort('desc')"],
+    correctAnswer: 1,
     asked: false}
 ];
 
-var timeLeft = 120;
+var timeLeft = 0;
 var questionsLeft = 10;
 var timeContainer = document.getElementById('remaining-time');
 var startBtn = document.getElementById('start-game');
@@ -62,10 +70,18 @@ var localStorage = window.localStorage;
 var questionCounter = 0;
 var correctAnswers = 0;
 
-// Get highsccore from local storage
-var highScore = localStorage.getItem('highscore') ? localStorage.getItem('highscore') : 0;
+// Get highscores from local storage and display highest
+var highScores = localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : [];
+var highScoreNumbers = [0];
+
+for (var i=0; i<highScores.length; i++) {
+    highScoreNumbers.push(highScores[i].score);
+}
+
+var highScore = Math.max(...highScoreNumbers);
 var highScoreEl = document.getElementById('highest-score');
-highScoreEl.innerHTML = highScore+"";
+highScoreEl.innerHTML = highScore;
+
 
 // Adds a left zero when seconds are less than 10 - I couldn't find an easier way
 var padLeftZeros = function (num) {
@@ -77,9 +93,10 @@ var padLeftZeros = function (num) {
 };
 
 var updateTimeLeft;
+
 // Starts the game and timer
 function startGame() {
-    timeLeft = 120;
+    timeLeft = 60;
     questionsLeft = 10;
     score = 0;
     questionCounter = 0;
@@ -90,6 +107,7 @@ function startGame() {
         var secs = timeLeft % 60;
         timeContainer.textContent = mins + ":" + padLeftZeros(secs);
         if (timeLeft<=0) {
+            timeContainer.textContent = "0:00";
             clearInterval(updateTimeLeft); 
             endGame('Timeout');
         }
@@ -152,24 +170,22 @@ function validateAnswer (event) {
         score+=10;
         correctAnswers++;
         console.log(correctAnswers);
-        event.target.setAttribute('class', 'correct');
+        event.target.setAttribute('class', 'answer-button correct');
         displayMessage("Correct!");
     } else {
         timeLeft-=10;
-        event.target.setAttribute('class', 'incorrect');
+        event.target.setAttribute('class', 'answer-button incorrect');
         displayMessage("Wrong!");
     }
     var scoreEl = document.getElementById('your-score');
     scoreEl.innerHTML = score;
 
-    // If the score is higher than the high score, then store it in local storage and update screen
+    // If the score is higher than the high score update it in the screen
     if (score > highScore) {
         var highScoreEl = document.getElementById('highest-score');
         highScore = score;
-        localStorage.setItem('highscore', highScore);
         highScoreEl.innerHTML = highScore;
     }
-    
     // Remove the event listener from all answers so that users can't validate the same question over and over
     var answers = document.getElementsByClassName('answer-button');
     for (var i=0; i<answers.length; i++) {
@@ -184,7 +200,7 @@ function displayMessage(message) {
     correctMessage.innerHTML = message;
     var nextQuestionButton = document.createElement ("button");
     nextQuestionButton.addEventListener("click", selectNextQuestion);
-    nextQuestionButton.innerHTML = "Next Question >"
+    nextQuestionButton.innerHTML = "Next >"
     footer.appendChild(correctMessage);
     footer.appendChild(nextQuestionButton);
 }
@@ -193,18 +209,15 @@ function endGame(reason){
     
     // If the user answered correctly all questions, add time left to score as a bonus to create a grand total 
     var bonus = 0;
-    var grandTotal = score;
     if (correctAnswers === 10) {
         bonus = timeLeft;
-        grandTotal += bonus;
+        score += bonus;
     }
     
-    // If the grand total is higher than the high score, then store it in local storage and update screen
-    if (grandTotal > highScore) {
+    // If the grand total is higher than the high score, then update screen
+    if (score > highScore) {
         var highScoreEl = document.getElementById('highest-score');
-        highScore = grandTotal;
-        localStorage.setItem('highscore', highScore);
-        highScoreEl.innerHTML = highScore;
+        highScoreEl.innerHTML = score;
     }
     
     // Set header message
@@ -216,18 +229,20 @@ function endGame(reason){
     titleHeader.innerHTML = endGameMessage;
     questionSection.appendChild(titleHeader);
    
-    // Set score on the answers area
+    // Set score on the answers area and allow user to enter their initials
     var answersSection = document.getElementById('answers');
     answersSection.innerHTML = "<p>Your Score: "+ score+"</p>" +
         "<p>Time bonus: " + bonus + "</p>" +
-        "<p>Total score: " + grandTotal + "</p><hr>"+
+        "<p>Total score: " + score + "</p><hr>"+
         "<label>Enter your initials</label>";
 
     var initialsBox = document.createElement("input");
     initialsBox.setAttribute('maxlength','3');
+    initialsBox.setAttribute('id','initials-box');
 
     var saveInitialsButton = document.createElement("button");
     saveInitialsButton.innerText = "Save My Score";
+    saveInitialsButton.addEventListener('click',recordHighscore);
 
     answersSection.appendChild(initialsBox);
     answersSection.appendChild(saveInitialsButton);
@@ -242,6 +257,43 @@ function endGame(reason){
 
     footer.appendChild(tryAgainButton);
 
+}
+
+function recordHighscore(event) {
+    var initialsBox = event.target.previousElementSibling;
+    if (initialsBox.value!='') { 
+        var currentScore = {
+            initials: initialsBox.value,
+            score: score
+        }
+        // Add score to high scores
+        highScores.push (currentScore);
+        // Reorder high scores from highest to lowest
+        highScores.sort (function (a,b) {
+            return b.score - a.score;
+        });
+        // Keep only the top 3 elements
+        highScores = highScores.slice(0,3)
+        // Record high scores in local storage
+        localStorage.setItem('highscores', JSON.stringify(highScores));
+
+        // Display high scores
+        showHighscores();
+    } else {
+        alert('Please enter your initials');
+    }
+}
+
+function showHighscores() {
+    var answersSection = document.getElementById('answers');
+    answersSection.innerHTML = "<p><strong>Top 3 Scores</strong></p>";
+    
+    for (var i=0; i<highScores.length; i++) {
+        var highScoreEl = document.createElement('p');
+        highScoreEl.innerHTML = highScores[i].initials + " - " + highScores[i].score;
+        answersSection.appendChild(highScoreEl);
+    }
+    
 }
 
 function refreshPage() {
