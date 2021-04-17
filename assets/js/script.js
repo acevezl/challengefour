@@ -77,7 +77,7 @@ highScores.sort (function (a,b) {
     return b.score - a.score;
 });
 // Because we sorted the array by score, the first element is the highest
-var highScore = highScores[0].score;
+var highScore = highScores.length? highScores[0].score : 0;
 var highScoreEl = document.getElementById('highest-score');
 highScoreEl.innerHTML = highScore;
 
