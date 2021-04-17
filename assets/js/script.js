@@ -63,22 +63,21 @@ var questions = [
 
 var timeLeft = 0;
 var questionsLeft = 10;
-var timeContainer = document.getElementById('remaining-time');
-var startBtn = document.getElementById('start-game');
 var score = 0;
-var localStorage = window.localStorage;
 var questionCounter = 0;
 var correctAnswers = 0;
 
-// Get highscores from local storage and display highest
+var localStorage = window.localStorage;
+var timeContainer = document.getElementById('remaining-time');
+var startBtn = document.getElementById('start-game');
+
+// Get highscores array from local storage
 var highScores = localStorage.getItem('highscores') ? JSON.parse(localStorage.getItem('highscores')) : [];
-var highScoreNumbers = [0];
-
-for (var i=0; i<highScores.length; i++) {
-    highScoreNumbers.push(highScores[i].score);
-}
-
-var highScore = Math.max(...highScoreNumbers);
+highScores.sort (function (a,b) {
+    return b.score - a.score;
+});
+// Because we sorted the array by score, the first element is the highest
+var highScore = highScores[0].score;
 var highScoreEl = document.getElementById('highest-score');
 highScoreEl.innerHTML = highScore;
 
