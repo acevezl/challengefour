@@ -12,12 +12,12 @@ Application that asks for 10 random questions out of a pool of N questions. User
 
 ## Table of contents
 
-* [Initial Setup](###Initial-Setup)
-* [Starting the game](###Starting-the-game)
-* [Asking random questions out of a pool of questions](###Asking-random-questions-out-of-a-pool-of-questions)
-* [Validate the answer and display "Correct" or "Wrong"](###-Validate-the-answer-and-display-"Correct"-or-"Wrong")
-* [Ending the game](###Ending-the-game)
-* [Storing user initials](###Storing-user-initials)
+* [Initial Setup](#Initial-Setup)
+* [Starting the game](#Starting-the-game)
+* [Asking random questions out of a pool of questions](#Asking-random-questions-out-of-a-pool-of-questions)
+* [Validate the answer and display "Correct" or "Wrong"](#-Validate-the-answer-and-display-"Correct"-or-"Wrong")
+* [Ending the game](#Ending-the-game)
+* [Storing user initials](#Storing-user-initials)
 
 
 ## Logic
