@@ -10,6 +10,8 @@ Application that asks for 10 random questions out of a pool of N questions. User
 * The top 3 scores are stored in local storage and displayed in the screen.
 * The top highscore is retrieved and displayed on every new game.
 
+> Watch it in action here:  https://acevezl.github.io/challengefour/
+
 ## Table of contents
 
 * [Initial Setup](#Initial-Setup)
